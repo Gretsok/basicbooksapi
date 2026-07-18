@@ -1,4 +1,3 @@
 package fr.fergalmechin.basicbooksapi.dto.request;
 
-public class BookRequest {
-}
+public record BookRequest(String title, Integer year, Long authorId) {}

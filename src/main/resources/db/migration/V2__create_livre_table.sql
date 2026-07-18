@@ -1,0 +1,6 @@
+CREATE TABLE livre (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    title VARCHAR(200) NOT NULL,
+    year INTEGER,
+    author_id INTEGER REFERENCES author(id)
+);

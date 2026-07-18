@@ -1,4 +1,7 @@
-﻿package fr.fergalmechin.basicbooksapi.repository;
+package fr.fergalmechin.basicbooksapi.repository;
 
-public class AuthorRepository {
+import fr.fergalmechin.basicbooksapi.entity.Author;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface AuthorRepository extends JpaRepository<Author, Long> {
 }
