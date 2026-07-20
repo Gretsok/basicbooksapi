@@ -26,7 +26,7 @@ public class AuthorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Author> getById(@RequestParam long id) {
+    public ResponseEntity<Author> getById(@PathVariable long id) {
         log.info("Getting author with id {0}", id);
         return authorRepository.findById(id)
                 .map(ResponseEntity::ok)
