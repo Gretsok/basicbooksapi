@@ -1,8 +1,8 @@
 package fr.fergalmechin.basicbooksapi.controller;
 
 import fr.fergalmechin.basicbooksapi.entity.Author;
+import fr.fergalmechin.basicbooksapi.exception.DuplicateResourceException;
 import fr.fergalmechin.basicbooksapi.repository.AuthorRepository;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -16,8 +16,6 @@ import java.util.List;
 @RequestMapping("/api/authors")
 @Slf4j
 public class AuthorController {
-
-
     @Autowired
     private AuthorRepository authorRepository;
 
@@ -42,8 +40,7 @@ public class AuthorController {
             log.info("Creating new author {0}", author);
             return ResponseEntity.status(HttpStatus.CREATED).body(saved);
         } catch (DataIntegrityViolationException e) {
-            log.warn("Trying to create existing author {0}", author);
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Author is already existing.");
+            throw new DuplicateResourceException("Author is already existing.");
         }
     }
 
@@ -58,8 +55,7 @@ public class AuthorController {
                     log.info("Updating author {0}", author);
                     return ResponseEntity.ok(saved);
                 } catch (DataIntegrityViolationException e) {
-                    log.warn("Name conflict when trying to update author {0}", author);
-                    return ResponseEntity.status(HttpStatus.CONFLICT).body("Author with this name already exists.");
+                    throw new DuplicateResourceException("Author with this name already exists.");
                 }
             })
             .orElseGet(() -> {
