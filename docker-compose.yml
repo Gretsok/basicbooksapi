@@ -9,6 +9,23 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U apiuser -d basicbooksdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/basicbooksdb
+      SPRING_DATASOURCE_USERNAME: apiuser
+      SPRING_DATASOURCE_PASSWORD: verystrongpassword
+    depends_on:
+      db:
+        condition: service_healthy
 
 volumes:
   pgdata:
