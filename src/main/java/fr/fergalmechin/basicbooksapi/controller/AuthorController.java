@@ -27,7 +27,7 @@ public class AuthorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Author> getById(@PathVariable long id) {
-        log.info("Getting author with id {0}", id);
+        log.info("Getting author with id {}", id);
         return authorRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -37,7 +37,7 @@ public class AuthorController {
     public ResponseEntity<?> create(@RequestBody Author author) {
         try {
             Author saved = authorRepository.save(author);
-            log.info("Creating new author {0}", author);
+            log.info("Creating new author {}", author);
             return ResponseEntity.status(HttpStatus.CREATED).body(saved);
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateResourceException("Author is already existing.");
@@ -52,14 +52,14 @@ public class AuthorController {
                 author.setCountry(updatedAuthor.getCountry());
                 try {
                     var saved = authorRepository.save(author);
-                    log.info("Updating author {0}", author);
+                    log.info("Updating author {}", author);
                     return ResponseEntity.ok(saved);
                 } catch (DataIntegrityViolationException e) {
                     throw new DuplicateResourceException("Author with this name already exists.");
                 }
             })
             .orElseGet(() -> {
-                log.warn("No author found with id {0}", id);
+                log.warn("No author found with id {}", id);
                 return ResponseEntity.notFound().build();
             });
     }
@@ -67,11 +67,11 @@ public class AuthorController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable long id) {
         if (!authorRepository.existsById(id)) {
-            log.warn("No author found with id {0}", id);
+            log.warn("No author found with id {}", id);
             return ResponseEntity.notFound().build();
         }
         authorRepository.deleteById(id);
-        log.info("Deleting author with id {0}", id);
+        log.info("Deleting author with id {}", id);
         return ResponseEntity.noContent().build();
     }
 
